@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load thumbnail %}
+{% load threadedcomments_tags %}
+{% block title %}
+{% trans "Forum for " %}{{ forum.title }}
+{% endblock %}
+
+{% block content %}
+<div class="span6 profileRows">
+	<h2 class="profileHeading">{{ forum.title }}<span class="pull-right"><a href="{% url 'course_forum_list' forum.course.id %}" class="Edit"><i class="icon-arrow-left"></i>Back</a></span></h2>
+    {% if forum %}
+        {% ifequal forum.uploads.file_type "VID" %}
+        <video width="500" height="400" controls autoplay style=" background-color: black;">
+            <source src="{{ forum.uploads.uploads.url }}" type="video/webm" /><!-- WebM/VP8/Vorbis -->
+            <object width="640" height="505" type="application/x-shockwave-flash" data="{{ forum.uploads.uploads.url }}">
+                <param name="movie" value="{{ forum.uploads.uploads.url }}" />
+                <!-- fallback image -->
+                <img src="poster.jpg" width="640" height="360" alt="OPEN video" />
+            </object>
+        </video>
+        {% else %}
+            <embed src="{{ forum.uploads.uploads.url }}" width="570" height="505">
+        {% endifequal %}
+	<div class="media-body mb20">
+		<h4 class="media-heading">{{ forum.uploads.title }}</h4>
+		<div class="media">{{ forum.uploads.description }}</div>	
+	</div>
+	{% if request.user.get_profile.comment %}
+	{% get_comment_list for forum as comments %}
+	<ul id="commentsContainer">
+	{% if comments %}		
+	    {% for comment in comments %}
+  		<li class="clearfix span7">
+		    <div class="thumbs pull-left">
+			{% if comment.user.get_profile.avatar %}
+				{% thumbnail comment.user.get_profile.avatar "50x50" crop="center" as avatar %}
+					<img src="{{ avatar.url }}" height={{ avatar.height }} width={{ avatar.width }}/>
+				{% endthumbnail %}
+			{% else %}
+    				<img src="{{ STATIC_URL }}img/blank-avatar-50x50.jpg" />	
+			{% endif %}
+		    </div>
+
+		    <div class="documentsInfo span5 ml10">
+			<p><a href="{% url 'index' %}"><strong>{{ comment.user.get_full_name }}</strong></a> - <a href="javascript:void(0);" class="smallText">{{ comment.submit_date }}</a></p>
+			<p class="smallText">{{ comment.comment }}</p>
+		    </div>
+		</li>		
+    	    {% endfor %}
+	{% else %}
+	<p id="noComments" class="smallText">No comments exist for this forum</p>
+	{% endif %}
+    	</ul>
+				{% endif %}
+	{% else %}
+	<p class="smallText">No forums exist for this course</p>
+	{% endif %}
+
+	{% if request.user.get_profile.comment %}
+	<form method="POST" action="">
+	    {% csrf_token %}
+	    <div class="input-append">
+		<input class="span2" id="comment" type="text" placeholder="Write a comment">
+		<button class="btn" id="submit_comment" type="button">Submit</button>
+	    </div>
+	</form>
+	{% endif %}
+        	
+	<div style="clear:both;"></div> 
+	</div>
+{% endblock %}
+
+{% block extra_body %}
+<script type="text/javascript">
+    $("#submit_comment").click(function(event){
+    event.preventDefault(); 
+		    
+	$.ajax({
+	    url : "{% url 'add_comment' forum.course.id forum.id %}",
+	    type : "POST",
+	    data : {csrfmiddlewaretoken : document.getElementsByName('csrfmiddlewaretoken')[0].value,
+	    		comment : $("#comment").val(),
+	    	},
+	    dateType : "json",
+	    success : function(response){
+	    	if(response.status){
+    		    var str = document.getElementById('commentsContainer').innerHTML;
+	    	    str = str.concat('<li class="clearfix span7"><div class="thumbs pull-left"><img width="50/" height="50" src="' + response.avatar + '"></div><div class="documentsInfo span5 ml10"><p><a href="{% url "index" %}"><strong>' + response.name + '</strong></a> - <a href="javascript:void(0);" class="smallText">' + response.date + '</a></p><p class="smallText">' + response.comment + '</p></div></li>')
+		        document.getElementById('commentsContainer').innerHTML = str;
+		        $('#comment').val('');
+		            if(document.getElementById('noComments')){
+			        document.getElementById('noComments').innerHTML = '';
+			    }
+	    	}
+	    }	
+	});
+    });
+</script>
+{% endblock %}

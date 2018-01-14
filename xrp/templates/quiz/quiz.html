@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans "Video" %}
+{% endblock %}
+
+{% block content %}
+	<h2 class="profileHeading">{{ quiz.title }}<span class="pull-right"><a href="{% url 'course_quiz_list' quiz.course.id %}" class="Edit"><i class="icon-arrow-left"></i>Back</a></span></h2>
+    
+	<div class="row">
+	<div class="span5">
+		{% comment %}
+		<video width="500" height="400" autoplay="autoplay" style=" background-color: black;">
+			<source src="{{ quiz.video.uploads.url }}"  type="video/mp4" />
+		</video>
+
+		<object width="160" height="144"
+			classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B"
+			codebase="http://www.apple.com/qtactivex/qtplugin.cab">
+			<param name="src" value="Example.mov">
+			<param name="autoplay" value="true">
+			<param name="controller" value="false">
+
+			<embed src="{{ quiz.video.uploads.url }}" width="500" height="400"
+				autoplay="true" controller="false" controls="0" disablekb="1" fullscreen="0"
+				pluginspage="http://www.apple.com/quicktime/download/">
+			</embed>
+		</object>
+		{% endcomment %}
+
+		<video width="500" height="400" controls autoplay style=" background-color: black;">
+			<source src="{{ quiz.video.uploads.url }}" type="video/webm" /><!-- WebM/VP8/Vorbis -->
+			<object width="640" height="505" type="application/x-shockwave-flash" data="{{ quiz.video.uploads.url }}">
+				<param name="movie" value="{{ quiz.video.uploads.url }}" />
+				<!-- fallback image -->
+				<img src="poster.jpg" width="640" height="360" alt="OPEN video" />
+			</object>
+		</video>
+	</div>
+
+
+	<div class="span4" style="height:500px; margin-left:40px; overflow: auto;" id="quizForm">
+        {% ifequal request.user.get_profile.role 'in' %}
+	<form enctype="multipart/form-data" method="POST" action="{% url 'instructor_attempt' quiz.id %}" class="form-horizontal" name="QuizForm">
+        {% else %}
+        <form enctype="multipart/form-data" method="POST" action="{% url 'quiz' quiz.id %}" class="form-horizontal" name="QuizForm">
+        {% endifequal %}
+	    {% csrf_token %}
+	    <div class="profileRows">
+
+	    <ul class="ml20">
+			{% if mcquestions %}
+		<h2 class="profileHeading" style="border-bottom: 0px;">1. Checklist <span class="pull-right"></span></h2>
+		
+		{% for mcq in mcquestions %}
+		    <li class="clearfix ml10">
+		    <p class="mb10"><strong>Q. {{ mcq.content }}</strong></p>
+			{% for choice in mcq.choice.all %}
+			    <label class="radio">
+				<input type="radio" name="mcquestion_{{ mcq.id }}" id="{{ choice.id }}" value="{{ choice.content }}">{{ choice.content }}
+	    		    </label>
+			{% endfor %}
+		    </li>
+		{% endfor %}
+			{% endif %}
+			{% if likert %}
+		<h2 class="profileHeading" style="border-bottom: 0px;"></i>2. Global Rating Scale <span class="pull-right"></span></h2>
+		
+		{% for l in likert %}
+		    <li class="clearfix ml10">
+		    <p class="mb10"><strong>Q. {{ l.content }}</strong></p>
+	    		<label class="radio inline">
+				<input type="radio" name="likert_{{ l.id }}" id="likert_{{ l.id }}" value="1">1
+	    		</label>
+	    		<label class="radio inline">
+			    <input type="radio" name="likert_{{ l.id }}" id="likert_{{ l.id }}" value="2">2
+	    		</label>
+	    		<label class="radio inline">
+			    <input type="radio" name="likert_{{ l.id }}" id="likert_{{ l.id }}" value="3">3
+	    		</label>
+	    		<label class="radio inline">
+			    <input type="radio" name="likert_{{ l.id }}" id="likert_{{ l.id }}" value="4">4
+	    		</label>
+	    		<label class="radio inline">
+			    <input type="radio" name="likert_{{ l.id }}" id="likert_{{ l.id }}" value="5">5
+	    		</label>
+	    	    </li>
+		{% endfor %}
+			{% endif %}
+			{% if openended %}
+		<h2 class="profileHeading" style="border-bottom: 0px;">3. Open Ended Questions <span class="pull-right"></span></h2> 
+		
+		{% for o in openended %}
+		    <li class="clearfix ml10">
+		    <p class="mb10"><strong>Q. {{ o }}</strong></p>
+			<textarea name="openended_{{ o.id }}" rows="8" style="width:300px;"></textarea>
+	    	    </li>
+		{% endfor %}
+			{% endif %}
+
+			{% if mcquestions or likert or openended %}
+		<button type="submit" class="btn ml10" id="submit">Submit</button>
+			{% else %}
+				<p class="smallText">No questions for this video. Go back and try another video</p>
+			{% endif %}
+</ul></div>
+	</form>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_body %}
+
+<script type="text/javascript">
+	$('#submit').click(function(event){
+
+ 		var allInputs = $("input:radio");
+ 		var arr = [];
+ 		var flag = true;
+ 		for (var i = 0; i < allInputs.length; i++){
+ 			if ($.inArray(allInputs[i].name, arr) == -1){
+				arr.push(allInputs[i].name);
+			}
+ 		}
+		for (var i = 0; i < arr.length; i++){
+			var s = 'input[name=' + arr[i] + ']:checked';
+			if (!($(s).val())){
+				flag = false;
+				break;
+			}
+		}
+		if (!flag){
+			alert('One or more questions have not been answered. Please complete and then proceed.');
+		}
+		return flag;
+	});
+
+</script>
+{% endblock %}

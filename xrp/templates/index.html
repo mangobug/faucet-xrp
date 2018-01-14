@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans "OPEN Kids - Online Practicing and Educational Networking System" %}
+{% endblock %}
+{% block content %}
+<div class="row">
+
+        <div class="span10">
+
+	<div class="pull-left">
+	    <h2 class="ml80">Login to your $xrp faucet</h2>
+	    <form method="POST" action="?next={% url 'index' %}" class="form-horizontal" name="LoginForm">
+		    {% csrf_token %}
+		    <div class="control-group">
+			    <label class="control-label" for="username">Wallet Address</label>
+			    <div class="controls">
+				    <input type="text" id="username" name="username" placeholder="Wallet Address">
+				     <input type="hidden" name="form" value="form1">
+			    </div>
+		    </div>
+		    <div class="control-group">
+			    <label class="control-label" for="password">Password</label>
+			    <div class="controls">
+				    <input type="password" id="password" name="password" placeholder="Password">
+			    </div>
+		    </div>
+		    <div class="control-group">
+			    <div class="controls">
+				    <label class="checkbox">
+					    <input type="checkbox"> Remember me <input type="submit" class="btn ml12" value="Sign In" />
+
+				    </label>
+				   			    </div>
+		    </div>
+	    </form>
+
+    	</div>
+
+	<div class="pull-right">
+        <h2 class="ml80";>Don't have an account</h2>
+	<form method="POST" action="?next={% url 'index' %}" class="form-horizontal divider-left" name="SignUpForm">
+		{% csrf_token %}
+		    <div class="control-group">
+			    <label class="control-label" for="inputUsername">Wallet Address</label>
+			    <div class="controls">
+				{{ form.username }}
+        <input type="hidden" name="form" value="form2">
+			        <div class="error"></div>
+			    </div>
+		    </div>
+
+
+		    <div class="control-group">
+			    <label class="control-label" for="inputPassword">Password</label>
+			    <div class="controls">
+				{{ form.password }}
+			        <div class="error"></div>
+			    </div>
+		    </div>
+		    <div class="control-group">
+			    <label class="control-label" for="inputPassword2">Re-enter</label>
+			    <div class="controls">
+				<input type="password" id="inputPassword2" name="password2" placeholder="Re-enter Password">
+ 			        <div class="error"></div>
+
+			    </div>
+		    </div>
+
+
+		    <div class="control-group">
+			    <div class="controls">
+				   <button class="btn" id="uploadBtn">Term & Conditions</button>
+				   <button type="submit" class="btn" id="signup" disabled>Sign Up</button>
+			    </div>
+		    </div>
+	    </form>
+	</div>
+
+	        <div style="clear:both;"></div>
+
+        </div>
+
+
+      </div>
+
+
+
+
+      <div id="formUpload" class="userForm" style="display:none;">
+		<h2>Terms and Conditions</h2>
+
+          <form action="" class="userFroms">
+		  <p>
+	  <strong>Please read and agree to the Terms and Conditions in order to use this web site.</strong>
+	  </p>
+	  <div id="terms"><p></p></div>
+	  <br/>
+	  <p>
+	  <input type="checkbox" id="confirmation_check"> <strong>I have read and agree to the $XRP Terms and Conditions and their Privacy Policy</strong>
+	  </p>
+          <div class="clearfix"></div>
+          <a href="#" id="close" class="close close-x"></a>
+
+	  <p align="center" style="margin:20px 0; ">
+	  	<button type="button" class="btn" id="continueBtn" />Continue</button>
+	  </p>
+
+       </form>
+            </div>
+
+
+{% endblock %}
+
+{% block extra_body %}
+<script src="{{ STATIC_URL }}js/jquery.lightbox_me.js"></script>
+
+<script type="text/javascript">
+//$("#formUpload").lightbox_me();
+
+$('#uploadBtn').click(function(e) {
+    $('#formUpload').lightbox_me({
+        centered: true,
+        onLoad: function() {
+            $('#formUpload').find('input:first').focus()
+            }
+        });
+    e.preventDefault();
+});
+
+</script>
+
+<script type="text/javascript">
+$('#continueBtn').click(function(e){
+	var input = $('#confirmation_check').prop('checked');
+	if (input){
+	    $( "#close" ).trigger( "click" );
+	     document.getElementById("signup").disabled = false;
+	}
+});
+</script>
+
+<script type="text/javascript">
+$('#id_username').change(function(event){
+		console.log(document.getElementById('id_username').value);
+$.ajax({
+        url : "{% url 'username_available' %}",
+        type: "POST",
+        data : {csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+	               username: document.getElementById('id_username').value,
+               },
+        dataType : "json",
+        success: function( response ){
+
+            if(response == "True"){
+		document.getElementById('id_username').nextSibling.nextSibling.innerHTML = ''
+
+            }
+            else {
+		document.getElementById('id_username').nextSibling.nextSibling.innerHTML = '<p>Username already exists</p>'
+            }
+        }
+    });
+});
+</script>
+
+<script type="text/javascript">
+	$('#signup').click(function(event){
+		var username = $('#id_username').val();
+		var password = $('#id_password').val();
+		var password2 = $('#inputPassword2').val();
+		var flag = true;
+
+		if (!username){
+			document.getElementById('id_username').nextSibling.nextSibling.innerHTML = '<p>Please enter a username</p>'
+			flag = false;
+		}
+		else if(document.getElementById('id_username').nextSibling.nextSibling.innerHTML != ''){
+			alert('Please enter another username');
+			flag = false;
+		}
+
+		if (!password){
+			document.getElementById('id_password').nextSibling.nextSibling.innerHTML = '<p>Please enter a password</p>'
+			flag = false;
+		}
+		else{
+			document.getElementById('id_password').nextSibling.nextSibling.innerHTML = ''
+		}
+
+		if (!password2){
+			document.getElementById('inputPassword2').nextSibling.nextSibling.innerHTML = '<p>Please re-enter a password</p>'
+			flag = false;
+		}
+		else if (password != password2){
+			document.getElementById('inputPassword2').nextSibling.nextSibling.innerHTML = ''
+			alert('Passwords don\'t match');
+			flag = false;
+		}
+		return flag;
+	});
+</script>
+
+{% endblock %}

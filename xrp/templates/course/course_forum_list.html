@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block title %}
+{% trans "Forums Available" %}
+{% endblock %}
+
+{% block content %}
+<div class="avatar alpha pull-left" onmouseover="show.style.display = 'block';", onmouseout="show.style.display = 'none';">
+	    <img src="{{ STATIC_URL }}img/forum.jpg" />
+        </div>
+
+<div class="span6 profileRows">
+	<h2 class="profileHeading">Forums for {{ course.title }}<span class="pull-right">
+		<a href="{% url 'add_forum' course.id %}" class="Edit"><i class="icon-plus"></i> Add</a>
+    </span></h2>
+	
+	<ul class="nav nav-tabs ml150" style="border-bottom:None;">
+	  <li class="pull-left"><a href="{% url 'course_pdf_list' course.id %}">PDF</a></li>
+	  <li class="pull-left"><a href="{% url 'course_quiz_list' course.id %}">Quizzes</a></li>
+	  <li class="pull-left active"><a href="{% url 'course_forum_list' course.id %}">Forums</a></li>
+	  <li class="pull-left"><a href="{% url 'course_video_list' course.id %}">Videos</a></li>
+	</ul>
+
+	{% if forums %}	
+        <ul>
+	{% for forum in forums %}
+            <li class="clearfix">
+            <div class="span5 pull-left alpha">
+		    <a href="{% url 'view_forum' course.id forum.id %}"><p><strong>{{ forum.title }}</strong></p></a>
+            </div>            
+            </li>
+	{% endfor %}           
+          </ul>
+	{% else %}
+	<p class="smallText">No Forums exist for this course</p>
+	{% endif %}
+ 	
+	<div style="clear:both;"></div> 
+	</div>
+{% endblock %}
