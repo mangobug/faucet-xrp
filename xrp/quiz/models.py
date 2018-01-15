@@ -135,9 +135,9 @@ class LikertAnswer( TimeStampAwareModel ):
         verbose_name_plural = "likert answers"
 
 
-class xrpEnded( Question ):
+class OpenEnded( Question ):
     """
-    xrp Ended model
+    Open Ended model
     """
 
     def __unicode__(self):
@@ -145,8 +145,8 @@ class xrpEnded( Question ):
 
     class Meta:
         app_label = "quiz"
-        verbose_name = "xrp ended question"
-        verbose_name_plural = "xrp ended questions"
+        verbose_name = "open ended question"
+        verbose_name_plural = "open ended questions"
 
 
 class MCQuestionAttempt( TimeStampAwareModel ):
@@ -204,20 +204,20 @@ class LikertAttempt( TimeStampAwareModel ):
         verbose_name_plural = "likert scale attempts"
 
 
-class xrpEndedAttempt( TimeStampAwareModel ):
+class OpenEndedAttempt( TimeStampAwareModel ):
     """
-    xrp Ended Attempt model
+    Open Ended Attempt model
     """
-    xrpended = models.ForeignKey(xrpEnded)
+    openended = models.ForeignKey(OpenEnded)
     student = models.ForeignKey(User)
 
     answer = models.TextField(_('answer'), null = True, blank = True)
     no_of_attempt = models.PositiveIntegerField(default = 1)
 
     def __unicode__(self):
-        return _("%s_%s_%s") % (self.student.get_full_name(), self.xrpended.quiz, self.no_of_attempt)
+        return _("%s_%s_%s") % (self.student.get_full_name(), self.openended.quiz, self.no_of_attempt)
 
     class Meta:
         app_label = "quiz"
-        verbose_name = "xrp ended attempt"
-        verbose_name_plural = "xrp ended attempts"
+        verbose_name = "open ended attempt"
+        verbose_name_plural = "open ended attempts"

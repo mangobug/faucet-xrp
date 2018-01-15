@@ -15,12 +15,12 @@
 .accordion-inner a{color:#777; text-decoration:none; font-size:12px;}
 .accordion-inner a:hover{color:#C4161C; text-decoration:underline; }
 
-.footer{font-size:11px; color:#777;}
+.footer{font-size:11px;}
 
 #footernav{list-style:none; margin:0; }
 #footernav li{display:inline-block; margin-right:10px;}
-#footernav a{color:#777; font-size:11px;}
-#footernav a:hover{color:#C4161C; text-decoration:underline;}
+#footernav a{color:#46BAE9; font-size:11px;}
+#footernav a:hover{color:#fff; text-decoration:underline;}
 
 .small-text{font-size:11px; color:#777;}
 
@@ -76,7 +76,7 @@ li.cart{background-position: 109px 38px;}
     position: relative;
 }
 .close-x{
-    background-image:url(../img/close-x.png); 
+    background-image:url(../img/close-x.png);
     background-repeat:no-repeat;
     display: block;
     height: 23px;
@@ -90,8 +90,8 @@ li.cart{background-position: 109px 38px;}
 
 #terms {
     height:100px;
-    width:450px;     
-    overflow-y:scroll; 
+    width:450px;
+    overflow-y:scroll;
     overflow-x:hidden;
 }
 
@@ -129,3 +129,72 @@ li.cart{background-position: 109px 38px;}
 
 .pCaption{float:left; display:block; width:250px; font-size:12px;}
 .pDetails{float:left; display:block; margin-left:10px; font-size:12px;}
+
+.jumbotron {
+    color: rgb(41, 43, 44);
+    text-align: center;
+    background: rgb(236, 238, 239) none repeat scroll 0% 0% / auto padding-box border-box;
+    border: 0px none rgb(41, 43, 44);
+    border-radius: 4.8px 4.8px 4.8px 4.8px;
+    font: normal normal 400 normal 16px / 24px -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0px 0px 32px;
+    outline: rgb(41, 43, 44) none 0px;
+    padding: 64px 0px;
+}
+
+.btn-success {
+    box-sizing: border-box;
+    color: rgb(255, 255, 255);
+    display: inline-block;
+    text-align: center;
+    text-decoration: none solid rgb(255, 255, 255);
+    text-size-adjust: 100%;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+    column-rule-color: rgb(255, 255, 255);
+    perspective-origin: 100.906px 28px;
+    transform-origin: 100.906px 28px;
+    user-select: none;
+    caret-color: rgb(255, 255, 255);
+    background: #46BAE9 none repeat scroll 0% 0% / auto padding-box border-box;
+    border: 1px solid #46BAE9;
+    border-radius: 4.8px 4.8px 4.8px 4.8px;
+    font: normal normal 400 normal 24px / 30px -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    outline: #46BAE9 none 0px;
+    padding: 12px 24px;
+    transition: all 0.2s ease-in-out 0s;
+}
+
+.btn-success:hover {
+  background: #2382af;
+  border-color: #2382af;
+}
+
+.display-3 {
+    color: #31A2D8;
+    font: normal normal 300 normal 72px / 79.2px -apple-system, system-ui, system-ui, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: "Oleo Script", cursive, sans-serif;
+    font-size: 99px;
+    font-weight: bold;
+    margin: 0px 0px 50px;
+}
+
+.flip-clock-wrapper {
+    padding: 0 15%;
+    width: 70%!important;
+    margin: 3em!important;
+}
+
+hr {
+  border-color: #46BAE9;
+}
+
+.navbar-inner {
+  border-bottom-color: #46BAE9;
+}
+
+body {
+  color: #46BAE9;
+  background-color: #191919;
+}

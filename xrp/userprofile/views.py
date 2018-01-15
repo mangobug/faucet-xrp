@@ -29,7 +29,7 @@ def index (request, template_name):
             course_id = MCQuestionAttempt.objects.filter(student = request.user)[0].mcquestion.quiz.course.id
         except IndexError:
             course_id = None
-        return render_to_response('userprofile/profile.html', context_instance=RequestContext(request, {'userprofile': userprofile, 'grades': grades, 'course': course_id}))
+        return render_to_response('faucet/faucet.html', context_instance=RequestContext(request, {'userprofile': userprofile, 'grades': grades, 'course': course_id}))
     else:
         if request.POST:
             form_type = request.POST['form']
@@ -45,7 +45,7 @@ def index (request, template_name):
                         except UserProfile.DoesNotExist:
                             return HttpResponseRedirect(reverse('registration_register'))
                         grades = Grade.objects.filter(student = userprofile.user, course__start_date__lte = datetime.now()).order_by('-date_added')
-                        return render_to_response('userprofile/profile.html', context_instance=RequestContext(request, {'userprofile': userprofile, 'grades': grades}))
+                        return render_to_response('faucet/faucet.html', context_instance=RequestContext(request, {'userprofile': userprofile, 'grades': grades}))
                 else:
                     form = AuthenticationForm(None, request.POST)
                     return render_to_response('registration/login.html', context_instance=RequestContext(request, {'form': form}))
@@ -91,7 +91,7 @@ def registration (request, template_name):
                 obj.user = request.user
                 obj.save()
             grades = Grade.objects.filter(student = request.user, course__start_date__lte = datetime.now()).order_by('-date_added')
-            return render_to_response('userprofile/profile.html', context_instance=RequestContext(request, {'userprofile': userprofile, 'grades': grades}))
+            return render_to_response('faucet/faucet.html', context_instance=RequestContext(request, {'userprofile': userprofile, 'grades': grades}))
         else:
             return render_to_response(template_name, context_instance=RequestContext(request, {'form': form}))
     else:

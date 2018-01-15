@@ -16,7 +16,7 @@
     <link rel="icon" type="image/png" href="{{ STATIC_URL }}img/favicon.png">
 
     {% block extra_head %}{% endblock %}
-   
+
   </head>
 
   <body>
@@ -29,7 +29,7 @@
             <span class="icon-bar"></span>
           </a>
 	  <a class="brand" href="{% url 'index' %}"><img src="{{ STATIC_URL }}img/logo.png"></a>
-          
+
           <div class="userLogin">
           <ul>
 		<li> ver-2.0</li>
@@ -39,16 +39,15 @@
 			<li><a href="{% url 'django.contrib.auth.views.login' %}"><i class="icon-user"></i> Sign In </a></li>
 			<li><a href="{% url 'registration_register' %}"><i class="icon-pencil"></i> Sign up</a></li>
 		{% endif %}
-              
+
 	  </ul>
           </div>
-          
+
 	  <div class="nav-collapse">
 		  {% if user.is_authenticated %}
               <ul class="nav pull-right">
-		<li class="active"><a href="{% url 'index' %}">Profile</a></li>
-		<li><a href="{% url 'all_user_courses' %}">My Courses</a></li>
-            </ul>
+		              <li class="active"><a href="{% url 'index' %}">Profile</a></li>
+              </ul>
 	    {% endif %}
           </div><!--/.nav-collapse -->
         </div>
@@ -56,23 +55,22 @@
     </div>
 
     <div class="container tm">
-	
-      
+
       <!-- Example row of columns -->
       <div class="row">
-         
-        <div class="span10">
-        <!--<a href="#" class="btn btn-red">red</a>
-        <a href="#" class="btn btn-gray">gray</a> -->          
-          
-         {% block content %}{% endblock %}           
-              
+
+        <div class="span2">
+          Ads
         </div>
-        
-        
+
+        <div class="span8">{% block content %}{% endblock %}</div>
+
+        <div class="span2">
+          Ads
+        </div>
       </div>
 
-      
+
 <div class="clearfix"></div>
 <hr>
       <div class="footer">
@@ -80,7 +78,7 @@
 			<li><a href="#">Contact Us</a></li>
 			<li class="last"><a href="#">Privacy Policy</a></li>
 		</ul>
-      
+
         <p class="pull-right"> Contents &copy;2014 University of Ontario Institute of Technology. All rights reserved.</p>
       </div>
 
@@ -109,4 +107,4 @@
 
     {% block extra_body %}{% endblock %}
   </body>
-</html> 
+</html>

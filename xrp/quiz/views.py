@@ -12,7 +12,7 @@ from django.utils import simplejson
 
 from xrp.course.models import Course ,UploadedFile
 from xrp.quiz.forms import AddQuizForm
-from xrp.quiz.models import Choice, Likert, LikertAttempt, LikertAnswer, MCQuestion, MCQAnswer, MCQuestionAttempt, xrpEnded, xrpEndedAttempt, Quiz
+from xrp.quiz.models import Choice, Likert, LikertAttempt, LikertAnswer, MCQuestion, MCQAnswer, MCQuestionAttempt, OpenEnded, OpenEndedAttempt, Quiz
 
 
 @login_required
@@ -92,16 +92,16 @@ def quiz(request, quiz_id, template_name):
                     attempt.correct = False
                 attempt.save()
 
-            elif q_type == 'xrpended':
+            elif q_type == 'openended':
                 try:
-                    xrpended = xrpEnded.objects.get(id = q_id)
-                except xrpEnded.DoesNotExist:
-                    xrpended = None
+                    openended = openEnded.objects.get(id = q_id)
+                except OpenEnded.DoesNotExist:
+                    openended = None
 
                 if value:
-                    no_of_attempt = xrpEndedAttempt.objects.filter(xrpended = xrpended, student = request.user).aggregate(Max('no_of_attempt'))
+                    no_of_attempt = xrpEndedAttempt.objects.filter(openended = openended, student = request.user).aggregate(Max('no_of_attempt'))
 
-                    attempt = xrpEndedAttempt.objects.create(xrpended = xrpended,
+                    attempt = xrpEndedAttempt.objects.create(openended = openended,
                                        student = request.user, answer = value)
 
                     if no_of_attempt['no_of_attempt__max']:

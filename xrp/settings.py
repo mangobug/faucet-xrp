@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'storages',
     'tracking',
     'django-session-idle-timeout',
+    'captcha',
 
     #my apps
     'xrp.userprofile',
@@ -59,6 +60,7 @@ INSTALLED_APPS = (
     'xrp.institute',
     'xrp.course',
     'xrp.quiz',
+    'xrp.faucet',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -119,13 +121,13 @@ DATABASES = {
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Eastern'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'media/')
 
@@ -174,4 +176,7 @@ TRACK_AJAX_REQUESTS = True
 TRACK_PAGEVIEWS = True
 TRACK_QUERY_STRING = True
 
-SESSION_IDLE_TIMEOUT = 1800
+SESSION_IDLE_TIMEOUT = 18000
+
+RECAPTCHA_PUBLIC_KEY = '6Lf4sEAUAAAAABYDforDFL1_e5Pyu_TPd5x72Y7I'
+RECAPTCHA_PRIVATE_KEY = '6Lf4sEAUAAAAAIKoMhswzhp6CYu2mISVVASr2qSe'

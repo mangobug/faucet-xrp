@@ -26,6 +26,8 @@ urlpatterns = patterns('',
 
     url(r'^course/', include('xrp.course.urls')),
 
+    url(r'^faucet/', include('xrp.faucet.urls')),
+
     url(r'^quiz/', include('xrp.quiz.urls')),
 
     url(r'^tracking/', include('tracking.urls')),

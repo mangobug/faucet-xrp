@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from xrp.quiz.models import Choice, Likert, LikertAnswer, MCQAnswer, MCQuestion, xrpEnded, Quiz, MCQuestionAttempt, LikertAttempt, xrpEndedAttempt
+from xrp.quiz.models import Choice, Likert, LikertAnswer, MCQAnswer, MCQuestion, OpenEnded, Quiz, MCQuestionAttempt, LikertAttempt, OpenEndedAttempt
 
 
 class ChoiceAdmin(admin.ModelAdmin):
@@ -23,7 +23,7 @@ class MCQuestionAdmin(admin.ModelAdmin):
     pass
 
 
-class xrpEndedAdmin(admin.ModelAdmin):
+class OpenEndedAdmin(admin.ModelAdmin):
     pass
 
 
@@ -39,7 +39,7 @@ class LikertAttemptAdmin(admin.ModelAdmin):
     pass
 
 
-class xrpEndedAttemptAdmin(admin.ModelAdmin):
+class OpenEndedAttemptAdmin(admin.ModelAdmin):
     pass
 
 
@@ -49,7 +49,7 @@ admin.site.register(Likert, LikertAdmin)
 admin.site.register(LikertAnswer, LikertAnswerAdmin)
 admin.site.register(MCQuestion, MCQuestionAdmin)
 admin.site.register(Quiz, QuizAdmin)
-admin.site.register(xrpEnded, xrpEndedAdmin)
+admin.site.register(OpenEnded, OpenEndedAdmin)
 admin.site.register(MCQuestionAttempt, MCQuestionAttemptAdmin)
 admin.site.register(LikertAttempt, LikertAttemptAdmin)
-admin.site.register(xrpEndedAttempt, xrpEndedAttemptAdmin)
+admin.site.register(OpenEndedAttempt, OpenEndedAttemptAdmin)
